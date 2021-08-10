@@ -10,7 +10,12 @@ const loadNotes = () => {
 	}
 };
 
-const addNotes = (title, body) => {
+const savenotes = (notes) => {
+	const notesJson = JSON.stringify(notes);
+	fs.writeFileSync("notes.json", notesJson);
+};
+
+const addNote = (title, body) => {
 	const notes = loadNotes();
 	const duplicate = notes.filter((note) => note.title === title);
 
@@ -23,9 +28,22 @@ const addNotes = (title, body) => {
 	}
 };
 
-const savenotes = (notes) => {
-	const notesJson = JSON.stringify(notes);
-	fs.writeFileSync("notes.json", notesJson);
+const removeNote = (title) => {
+	const notes = loadNotes();
+	const filteredNotes = notes.filter((note) => note.title !== title);
+	console.log("Note removed");
+	savenotes(filteredNotes);
 };
 
-module.exports = { loadNotes, addNotes };
+const list = () => {
+	const notes = loadNotes();
+
+	notes.forEach((note) => {
+		console.log("----------------------");
+		console.log(`Title: ${note.title}`);
+		console.log(`Body: ${note.body}`);
+		console.log("----------------------");
+	});
+};
+
+module.exports = { addNote, removeNote, list };

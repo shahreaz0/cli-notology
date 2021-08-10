@@ -30,8 +30,11 @@ const addNote = (title, body) => {
 
 const removeNote = (title) => {
 	const notes = loadNotes();
+
 	const filteredNotes = notes.filter((note) => note.title !== title);
-	console.log("Note removed");
+
+	if (notes.length > filteredNotes.length) console.log("Note removed");
+	else console.log("No note found");
 	savenotes(filteredNotes);
 };
 

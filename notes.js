@@ -1,4 +1,5 @@
 const fs = require("fs");
+const chalk = require("chalk");
 
 const loadNotes = () => {
 	try {
@@ -17,14 +18,14 @@ const savenotes = (notes) => {
 
 const addNote = (title, body) => {
 	const notes = loadNotes();
-	const duplicate = notes.filter((note) => note.title === title);
+	const duplicate = notes.find((note) => note.title === title);
 
-	if (duplicate.length === 0) {
+	if (!duplicate) {
 		notes.push({ title, body });
-		console.log("Note Added.");
+		console.log(chalk.green.bold("Note Added."));
 		savenotes(notes);
 	} else {
-		console.log("Note title already taken.");
+		console.log(chalk.red.bold("Note title already taken."));
 	}
 };
 
@@ -33,20 +34,32 @@ const removeNote = (title) => {
 
 	const filteredNotes = notes.filter((note) => note.title !== title);
 
-	if (notes.length > filteredNotes.length) console.log("Note removed");
-	else console.log("No note found");
+	notes.length > filteredNotes.length
+		? console.log(chalk.green.bold("Note removed"))
+		: console.log(chalk.red.bold("No note found"));
+
 	savenotes(filteredNotes);
 };
 
-const list = () => {
+const readNote = (title) => {
+	const notes = loadNotes();
+
+	const note = notes.filter((note) => note.title === title);
+
+	note.length === 0
+		? console.log(chalk.red.bold("No note found"))
+		: console.log(`${chalk.blue.bold("Body")}: ${note[0].body}`);
+};
+
+const noteList = () => {
 	const notes = loadNotes();
 
 	notes.forEach((note) => {
 		console.log("----------------------");
-		console.log(`Title: ${note.title}`);
-		console.log(`Body: ${note.body}`);
+		console.log(`${chalk.blue.bold("Title")}: ${note.title}`);
+		console.log(`${chalk.blue.bold("Body")}: ${note.body}`);
 		console.log("----------------------");
 	});
 };
 
-module.exports = { addNote, removeNote, list };
+module.exports = { addNote, removeNote, readNote, noteList };

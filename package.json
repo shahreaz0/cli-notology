@@ -12,6 +12,7 @@
   "author": "Shahreaz Bin Alam",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^4.1.2",
     "yargs": "^17.1.0"
   }
 }

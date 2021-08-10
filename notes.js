@@ -43,12 +43,11 @@ const removeNote = (title) => {
 
 const readNote = (title) => {
 	const notes = loadNotes();
+	const note = notes.find((note) => note.title === title);
 
-	const note = notes.filter((note) => note.title === title);
-
-	note.length === 0
+	!note
 		? console.log(chalk.red.bold("No note found"))
-		: console.log(`${chalk.blue.bold("Body")}: ${note[0].body}`);
+		: console.log(`${chalk.blue.bold("Body")}: ${note.body}`);
 };
 
 const noteList = () => {
